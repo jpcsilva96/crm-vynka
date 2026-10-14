@@ -10,15 +10,17 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
-.output
-.vinxi
-.tanstack/**
-.nitro
+# `.env` deste projeto e RASTREADO de proposito: e insumo de build (o Vite le
+# VITE_* em tempo de build) e contem apenas valores publicos -- URL do projeto,
+# project id e a chave publicavel, que vao para o bundle do browser por desenho.
+# Sem ele, `createClient(undefined, undefined)` derruba o CRM inteiro.
+# `src/test/security-contract.test.ts` falha se algum segredo entrar aqui.
+.env.*
+!.env.example
 *.local
-
-# Wrangler / Cloudflare
-.wrangler/
-.dev.vars
+scratch/
+tmp/
+supabase/.temp/
 
 # Editor directories and files
 .vscode/*
@@ -30,3 +32,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Leitura do schema da produção de origem: referência local, fora do git
+supabase/_origem/

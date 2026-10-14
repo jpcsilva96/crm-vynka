@@ -1,0 +1,27 @@
+project_id = "crm-vynka"
+
+# ---------------------------------------------------------------------------
+# verify_jwt por função — NÃO É DOCUMENTAÇÃO, É CONTRATO DE DEPLOY.
+#
+# O CLI sobrescreve o verify_jwt de uma função a cada deploy: sem o bloco dela aqui, o valor
+# volta para o padrão do CLI. Toda função nova ganha o seu bloco, com o valor explícito.
+# ---------------------------------------------------------------------------
+
+# --- Exigem JWT de usuário do app ---
+
+[functions.create-user]
+verify_jwt = true
+
+[functions.update-user]
+verify_jwt = true
+
+[functions.delete-user]
+verify_jwt = true
+
+# Anexos de negociação: o gateway exige JWT válido, e a função ainda valida o acesso ao
+# workspace (e, na assinatura, se o caminho pedido pertence a ele).
+[functions.upload-anexo]
+verify_jwt = true
+
+[functions.storage-signed-url]
+verify_jwt = true

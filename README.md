@@ -1,30 +1,19 @@
-# Simple Placeholder
+# crm-vynka
 
-Crie um projeto mínimo, apenas uma página em branco com o texto "crm-vynka".
+CRM comercial: funil de negociações em lista e Kanban, qualificação BANT, tarefas e automações,
+contatos e empresas, comentários com menção, anexos, alertas, lixeira e perfis de acesso.
 
-Não crie banco de dados, não ative o Lovable Cloud, não configure Supabase, autenticação nem nenhum backend.
+Editor no Lovable: [crm-vynka](https://lovable.dev/projects/ade36c80-59e6-4f71-b1d6-01423a084878).
+Commits na `main` sincronizam com o editor, e vice-versa. **Não reescreva o histórico já enviado**
+(force push, rebase, amend): ver `AGENTS.md`.
 
-Não adicione componentes, rotas ou páginas extras.
-
-O código real deste projeto será enviado depois pelo repositório do GitHub; este projeto só serve como ponto de conexão.
-
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/ade36c80-59e6-4f71-b1d6-01423a084878).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+## Desenvolvimento local
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+npm ci
 npm run dev
 ```
+
+O backend vem só do `.env` (`VITE_SUPABASE_URL`, `VITE_SUPABASE_PROJECT_ID`,
+`VITE_SUPABASE_PUBLISHABLE_KEY`). Antes de mexer em banco, funções ou deploy, leia `CLAUDE.md` e
+`RULES.md`.
