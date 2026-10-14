@@ -14,8 +14,8 @@ trabalhar; o `RULES.md` diz o que não fazer e por quê.
 
 | Camada | Onde vive | Como chega em produção |
 |---|---|---|
-| Frontend (`src/`) | React 18 + TS + Vite + Tailwind/shadcn; estado em Zustand chamando o Supabase direto | **a definir** |
-| Backend (`supabase/functions/`, migrations) | Supabase próprio do crm-vynka (**a criar**) | CLI, deploy nomeado por script |
+| Frontend (`src/`) | React 18 + TS + Vite + Tailwind/shadcn; estado em Zustand chamando o Supabase direto | Lovable, sincronizado com `github.com/jpcsilva96/crm-vynka` |
+| Backend (`supabase/functions/`, migrations) | Supabase `hmrtddtbymqmovjfchiw` (região us-west-2) | CLI, deploy nomeado por script |
 
 O frontend lê o backend **só do `.env`** (`VITE_SUPABASE_URL`, `VITE_SUPABASE_PROJECT_ID`,
 `VITE_SUPABASE_PUBLISHABLE_KEY`). Não fixe URL nem chave em código: na origem, um bloco fixo no
@@ -24,14 +24,24 @@ O frontend lê o backend **só do `.env`** (`VITE_SUPABASE_URL`, `VITE_SUPABASE_
 Deploy e SQL feitos por CLI ou dashboard **não voltam sozinhos para o git**. Todo drift entre repo e
 produção nasce do lado do Supabase.
 
-## Antes de qualquer deploy
+O Lovable **não reescreve histórico**: nada de force push, rebase ou amend em commit já enviado
+(ver `AGENTS.md`). O projeto está registrado no Lovable com o modelo TanStack Start, mas o app é
+Vite + React Router; se um commit do Lovable trouxer `src/routes/` ou `src/router.tsx`, pare.
+
+## Antes de qualquer deploy ou migration
+
+Os segredos ficam no `.env.local` (fora do git): `SUPABASE_PROJECT_REF`, `SUPABASE_ACCESS_TOKEN`,
+`SUPABASE_DB_PASSWORD`, `SUPABASE_POOLER_HOST`. Carregue-os no terminal antes:
 
 ```bash
-SUPABASE_ACCESS_TOKEN=... SUPABASE_PROJECT_REF=<ref> node scripts/check-drift.mjs
-SUPABASE_ACCESS_TOKEN=... SUPABASE_PROJECT_REF=<ref> node scripts/deploy-function.mjs <slug>
+set -a; . ./.env.local; set +a
+node scripts/check-drift.mjs                 # o repo bate com as funções no ar?
+node scripts/deploy-function.mjs <slug>      # deploy nomeado
+node scripts/ensaio-banco.mjs                # migrations pendentes + comportamento, sempre em ROLLBACK
+npx supabase@2.121.0 db push -p "$SUPABASE_DB_PASSWORD"   # só depois do ensaio passar
 ```
 
-Os dois scripts recusam rodar sem `SUPABASE_PROJECT_REF`: não há projeto padrão, de propósito.
+Os scripts recusam rodar sem `SUPABASE_PROJECT_REF`: não há projeto padrão, de propósito.
 Se `check-drift` acusar divergência, **capture a produção para o repo antes** (RULES.md §1).
 
 ## Nunca faça
@@ -49,10 +59,14 @@ Se `check-drift` acusar divergência, **capture a produção para o repo antes**
   com checagem de permissão) e `upload-anexo` + `storage-signed-url` (anexos da negociação no bucket
   privado `anexos`: o banco guarda o caminho, o link é assinado na hora de abrir).
 - `supabase/functions/_shared/` — código compartilhado entre funções. **Mudar aqui afeta várias.**
+- `supabase/migrations/` — começa pela migration base (`20261014120000_base_crm_vynka.sql`), o schema
+  inteiro num arquivo. Toda mudança depois dela é uma migration nova, ensaiada antes com
+  `scripts/ensaio-banco.mjs`.
 - `supabase/config.toml` — declara o `verify_jwt` de cada função. É contrato de deploy, não
   documentação (RULES.md §11). Toda função nova ganha o seu bloco.
 - `scripts/` — ferramental de drift, deploy e a guarda de comandos do Supabase.
-- `src/test/` — vitest. Fixtures anonimizadas.
+- `src/test/` — vitest. Fixtures anonimizadas. `baseMigration.ts` lê a migration base para os
+  contratos de schema.
 
 ## Testes
 

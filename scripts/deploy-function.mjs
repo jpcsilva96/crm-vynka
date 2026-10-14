@@ -96,9 +96,10 @@ console.log(
 // ---- 3. deploy ---------------------------------------------------------------------------
 console.log(`\n[3/4] Deployando '${slug}' (nomeado, --use-api)...`);
 try {
+  // CLI pelo npx, com versão fixa: não depende de instalação global nem muda de versão sozinho.
   execFileSync(
-    "supabase",
-    ["functions", "deploy", slug, "--use-api", "--project-ref", PROJECT_REF],
+    "npx",
+    ["--yes", "supabase@2.121.0", "functions", "deploy", slug, "--use-api", "--project-ref", PROJECT_REF],
     { cwd: RAIZ, encoding: "utf8", stdio: "inherit", shell: true },
   );
 } catch {

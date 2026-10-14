@@ -17,7 +17,6 @@ export interface Organization {
   contractEndDate?: string;
   maxUsers?: number;
   maxWorkspaces?: number;
-  maxChannels?: number;
   status?: string;
   isActive?: boolean;
   billingFrequency?: string;
@@ -69,7 +68,6 @@ export const useOrganizationStore = create<OrganizationState>((set, get) => ({
       contractEndDate: o.contract_end_date,
       maxUsers: o.max_users,
       maxWorkspaces: o.max_workspaces,
-      maxChannels: o.max_channels,
       status: o.status,
       isActive: o.is_active,
       billingFrequency: o.billing_frequency,
@@ -108,7 +106,6 @@ export const useOrganizationStore = create<OrganizationState>((set, get) => ({
       contract_end_date: orgData.contractEndDate,
       max_users: orgData.maxUsers,
       max_workspaces: orgData.maxWorkspaces,
-      max_channels: orgData.maxChannels,
       status: orgData.status || 'Ativo',
       is_active: orgData.isActive !== false,
       billing_frequency: orgData.billingFrequency || 'Mensal',
@@ -143,7 +140,6 @@ export const useOrganizationStore = create<OrganizationState>((set, get) => ({
     if (updates.contractEndDate !== undefined) dbUpdates.contract_end_date = updates.contractEndDate;
     if (updates.maxUsers !== undefined) dbUpdates.max_users = updates.maxUsers;
     if (updates.maxWorkspaces !== undefined) dbUpdates.max_workspaces = updates.maxWorkspaces;
-    if (updates.maxChannels !== undefined) dbUpdates.max_channels = updates.maxChannels;
     if (updates.status !== undefined) dbUpdates.status = updates.status;
     if (updates.isActive !== undefined) dbUpdates.is_active = updates.isActive;
     if (updates.billingFrequency !== undefined) dbUpdates.billing_frequency = updates.billingFrequency;

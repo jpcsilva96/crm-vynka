@@ -1174,7 +1174,7 @@ export default function Settings({ userEmail }: Props) {
         return (
           <SectionShell
             title="Workspace"
-            description="Configure os dados básicos do workspace ativo sem misturar pipelines, canais ou produtos."
+            description="Configure os dados básicos do workspace ativo sem misturar com os pipelines."
             action={
               <Button onClick={() => void handleSaveWorkspace()} className="gap-2">
                 <Save className="h-4 w-4" />

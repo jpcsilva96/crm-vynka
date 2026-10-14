@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { BASE, comandosDasPolicies, policies } from "./baseMigration";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 
@@ -53,16 +54,17 @@ describe("security contract", () => {
     expect(gitignore).toContain("scratch/");
   });
 
-  it("hardens roles and task automation RLS in the pre-production migration", () => {
-    const migration = readProjectFile("supabase/migrations/20260723145317_pre_prod_security_hardening.sql");
-
-    expect(migration).toContain("CREATE OR REPLACE FUNCTION public.get_workspace_id()");
-    expect(migration).toContain("roles_manageable_by_masters");
-    expect(migration).toContain("private.current_user_is_master()");
-    expect(migration).toContain("task_automation_rules_workspace_member_access");
-    expect(migration).toContain("task_automation_executions_workspace_member_access");
-    expect(migration).toContain("private.current_user_can_access_workspace");
-    expect(migration).not.toContain("FOR ALL TO public");
+  it("hardens roles and task automation RLS in the base migration", () => {
+    expect(BASE).toContain("CREATE OR REPLACE FUNCTION public.get_workspace_id()");
+    const roles = policies("public.roles").join("\n");
+    expect(roles).toContain("roles_manageable_by_masters");
+    expect(roles).toContain("private.current_user_is_master()");
+    for (const tabela of ["public.task_automation_rules", "public.task_automation_executions"]) {
+      const todas = policies(tabela);
+      expect(todas.length).toBeGreaterThan(0);
+      for (const p of todas) expect(p).toContain("private.current_user_can_access_workspace");
+    }
+    expect(BASE).not.toMatch(/FOR ALL TO public\b/);
   });
 
   it("routes user deletion through the authorized admin function", () => {
@@ -80,13 +82,12 @@ describe("security contract", () => {
     );
   });
 
-  it("removes open legacy RLS policies from sensitive browser tables", () => {
-    const migration = readProjectFile("supabase/migrations/20260720152156_harden_legacy_rls_and_create_user_auth.sql");
-
-    expect(migration).toContain('DROP POLICY IF EXISTS "Anyone can view channels"');
-    expect(migration).toContain("channels owned by authenticated user");
-    expect(migration).not.toContain("USING (true)");
-    expect(migration).not.toContain("WITH CHECK (true)");
+  it("has no open policy except the shared option-list catalog", () => {
+    // USING (true) só onde a leitura é catálogo comum por desenho (listas de Segmento e Cargo).
+    const abertas = (BASE.match(/CREATE POLICY [^\n]*\n\s*USING \(true\)/g) ?? []).map((p) => p.split(" ")[2]);
+    expect(abertas).toEqual(["crm_option_lists_read"]);
+    expect(BASE).not.toContain("WITH CHECK (true)");
+    expect(BASE).not.toMatch(/auth\.role\(\) = 'authenticated'/);
   });
 
   it("keeps the versioned .env free of secrets", () => {
@@ -134,13 +135,19 @@ describe("security contract", () => {
   });
 
   it("hardens organization profile roles and workspace RLS without allowing self privilege edits", () => {
-    const migration = readProjectFile("supabase/migrations/20260720153355_harden_core_org_rls.sql");
-
-    expect(migration).toContain("ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY");
-    expect(migration).toContain("ALTER TABLE public.organizations ENABLE ROW LEVEL SECURITY");
-    expect(migration).toContain("ALTER TABLE public.workspaces ENABLE ROW LEVEL SECURITY");
-    expect(migration).toContain("ALTER TABLE public.roles ENABLE ROW LEVEL SECURITY");
-    expect(migration).not.toContain("FOR UPDATE TO authenticated\n      USING (\n        id = auth.uid()");
+    for (const tabela of ["profiles", "organizations", "workspaces", "roles"]) {
+      expect(BASE).toContain(`ALTER TABLE public.${tabela} ENABLE ROW LEVEL SECURITY`);
+    }
+    // Nenhuma policy de UPDATE em profiles pode liberar a própria linha: o usuário trocaria o
+    // próprio role_id pela API. Perfil próprio se altera pela função update-user.
+    const updates = policies("public.profiles").filter((p) => /FOR (UPDATE|ALL) /.test(p));
+    expect(updates.length).toBeGreaterThan(0);
+    for (const p of updates) expect(p).not.toContain("auth.uid() = id");
+    // leitura de perfis recortada pela organização, nunca USING (true)
+    expect(policies("public.profiles").join("\n")).toContain("private.current_profile_org_id()");
+    // workspaces: leitura da organização; escrita só de master ou gestor
+    expect(comandosDasPolicies("public.workspaces")).toEqual(["ALL", "SELECT"]);
+    expect(policies("public.workspaces").find((p) => / FOR ALL /.test(p))).toContain("private.current_user_can_manage_org()");
   });
 
   it("does not silently ignore CRM deal note and task write failures", () => {

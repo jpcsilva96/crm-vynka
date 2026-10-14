@@ -80,7 +80,6 @@ const DEFAULT_FORM_STATE = {
   contractEndDate: "",
   maxUsers: 10,
   maxWorkspaces: 3,
-  maxChannels: 5,
   status: "Ativo",
   isActive: true,
   billingFrequency: "Mensal",
@@ -130,7 +129,6 @@ export const OrganizationsManagement = () => {
       contractEndDate: org.contractEndDate ? org.contractEndDate.split("T")[0] : "",
       maxUsers: org.maxUsers || 10,
       maxWorkspaces: org.maxWorkspaces || 3,
-      maxChannels: org.maxChannels || 5,
       status: org.status || "Ativo",
       isActive: org.isActive !== false,
       billingFrequency: org.billingFrequency || "Mensal",
@@ -388,7 +386,7 @@ export const OrganizationsManagement = () => {
               <legend className="text-sm font-semibold text-muted-foreground uppercase tracking-wider border-b border-border pb-2 w-full">
                 Limites
               </legend>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Máx. Usuários</Label>
                   <Input
@@ -403,14 +401,6 @@ export const OrganizationsManagement = () => {
                     type="number"
                     value={formData.maxWorkspaces}
                     onChange={(e) => setFormData({ ...formData, maxWorkspaces: parseInt(e.target.value) || 0 })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Máx. Canais</Label>
-                  <Input
-                    type="number"
-                    value={formData.maxChannels}
-                    onChange={(e) => setFormData({ ...formData, maxChannels: parseInt(e.target.value) || 0 })}
                   />
                 </div>
               </div>

@@ -1,3 +1,0 @@
--- Placeholder migration to align local history with the remote Supabase project.
--- The remote project already contains migration version 20260515200256.
--- This file is intentionally empty to keep local and remote histories compatible.

@@ -1,7 +1,4 @@
 import { describe, expect, it } from "vitest";
-import { readFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
 import {
   getAlertTypeLabel,
   getScopedAlertList,
@@ -9,12 +6,7 @@ import {
   keepOnlyMentionAlerts,
   type AppAlert,
 } from "@/lib/alertsStore";
-
-const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
-const migration = readFileSync(
-  resolve(root, "supabase/migrations/20260910170000_fix_comment_mention_alerts_rls.sql"),
-  "utf8",
-);
+import { comandosDasPolicies, funcao, policies } from "./baseMigration";
 
 const WS = "ws-1";
 const EU = "vendedor@exemplo.com.br";
@@ -102,44 +94,39 @@ describe("lista do sininho", () => {
 });
 
 /**
- * Contrato textual, no espírito de security-contract.test.ts: a migration é o que destrava a menção
- * e o que segura a privacidade do alerta. Se alguém afrouxar isso, o teste quebra — de propósito.
+ * Contrato textual da migration base: as policies são o que destrava a menção e o que segura a
+ * privacidade do alerta. Se alguém afrouxar isso, o teste quebra — de propósito.
  */
-describe("contrato da migration de RLS", () => {
+describe("contrato de RLS dos alertas", () => {
+  const todas = policies("public.crm_user_alerts");
+  const porNome = (nome: string) => todas.find((p) => p.startsWith(`CREATE POLICY ${nome} `)) ?? "";
+
   it("abre o INSERT validando o destinatário", () => {
-    expect(migration).toContain("crm_user_alerts_insert_workspace");
-    expect(migration).toContain("private.email_can_access_workspace");
-    expect(migration.indexOf("CREATE POLICY crm_user_alerts_insert_workspace")).toBeLessThan(
-      migration.indexOf("CREATE POLICY crm_user_alerts_delete_own"),
-    );
+    // Alerta de menção é para OUTRA pessoa: o INSERT não pode exigir que o alerta seja do autor
+    // (RULES.md §13), mas tem de exigir que o destinatário alcance o workspace.
+    const insert = porNome("crm_user_alerts_insert_workspace");
+    expect(insert).toContain("FOR INSERT");
+    expect(insert).toContain("private.email_can_access_workspace");
+    expect(insert).toContain("private.current_user_can_access_workspace");
   });
 
   it("mantém leitura, alteração e exclusão restritas ao dono", () => {
-    for (const policy of ["crm_user_alerts_select_own", "crm_user_alerts_update_own", "crm_user_alerts_delete_own"]) {
-      expect(migration).toContain(policy);
+    for (const nome of ["crm_user_alerts_select_own", "crm_user_alerts_update_own", "crm_user_alerts_delete_own"]) {
+      expect(porNome(nome)).toContain("auth.jwt() ->> 'email'");
     }
-    // nenhuma policy de leitura pode existir sem a comparação com o e-mail do JWT
-    const trechoSelect = migration.slice(
-      migration.indexOf("CREATE POLICY crm_user_alerts_select_own"),
-      migration.indexOf("CREATE POLICY crm_user_alerts_insert_workspace"),
-    );
-    expect(trechoSelect).toContain("auth.jwt() ->> 'email'");
+  });
+
+  it("nenhuma policy cobre todos os comandos de uma vez (permissiva soma por OR)", () => {
+    expect(comandosDasPolicies("public.crm_user_alerts")).toEqual(["DELETE", "INSERT", "SELECT", "UPDATE"]);
   });
 
   it("desliga alerta alheio só pela função de escopo estreito", () => {
-    expect(migration).toContain("CREATE OR REPLACE FUNCTION public.deactivate_comment_mention_alerts");
-    expect(migration).toContain("SECURITY DEFINER");
-    expect(migration).toContain("alerta.type = 'comment_mention'");
-    expect(migration).toContain("private.current_user_can_access_workspace(alerta.workspace_id::text)");
+    const fn = funcao("public.deactivate_comment_mention_alerts");
+    expect(fn).toContain("SECURITY DEFINER");
+    expect(fn).toContain("alerta.type = 'comment_mention'");
+    expect(fn).toContain("private.current_user_can_access_workspace(alerta.workspace_id::text)");
     // a função nunca reativa nem apaga
-    expect(migration).not.toContain("SET active = TRUE");
-    expect(migration).not.toContain("DELETE FROM public.crm_user_alerts");
-  });
-
-  it("derruba as policies antigas antes de criar as novas (permissiva soma por OR)", () => {
-    expect(migration).toContain("DROP POLICY IF EXISTS %I ON public.crm_user_alerts");
-    expect(migration.indexOf("DROP POLICY IF EXISTS %I ON public.crm_user_alerts")).toBeLessThan(
-      migration.indexOf("CREATE POLICY crm_user_alerts_select_own"),
-    );
+    expect(fn).not.toContain("SET active = TRUE");
+    expect(fn).not.toContain("DELETE FROM public.crm_user_alerts");
   });
 });
