@@ -559,7 +559,7 @@ export function CreateDealDialog({ open, onOpenChange, defaultPhone, defaultName
                 {showCreateCompanyForm && !companyId && (
                   <div className="grid grid-cols-2 gap-3 p-3 bg-muted/30 rounded-lg border border-dashed border-border">
                     <div className="space-y-1.5 col-span-2 flex justify-between items-center">
-                      <Label className="text-[#00adc7] font-semibold">Nova Empresa</Label>
+                      <Label className="text-primary font-semibold">Nova Empresa</Label>
                       <Button
                         variant="ghost"
                         size="sm"
@@ -689,7 +689,7 @@ export function CreateDealDialog({ open, onOpenChange, defaultPhone, defaultName
                       const contact = wsContacts.find(c => c.id === id);
                       if (!contact) return null;
                       return (
-                        <div key={id} className="relative group p-3 bg-muted/20 rounded-lg border border-border/50 hover:border-[#00adc7]/30 transition-colors">
+                        <div key={id} className="relative group p-3 bg-muted/20 rounded-lg border border-border/50 hover:border-primary/30 transition-colors">
                           <button 
                             onClick={() => setSelectedContactIds(prev => prev.filter(x => x !== id))}
                             className="absolute top-2 right-2 p-1 text-muted-foreground hover:text-red-500 transition-colors"
@@ -702,19 +702,19 @@ export function CreateDealDialog({ open, onOpenChange, defaultPhone, defaultName
                             <div className="flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-muted-foreground">
                               {contact.phone && (
                                 <div className="flex items-center gap-1.5">
-                                  <Phone className="w-3 h-3 text-[#00adc7]" />
+                                  <Phone className="w-3 h-3 text-primary" />
                                   {contact.phone}
                                 </div>
                               )}
                               {contact.email && (
                                 <div className="flex items-center gap-1.5">
-                                  <Mail className="w-3 h-3 text-[#00adc7]" />
+                                  <Mail className="w-3 h-3 text-primary" />
                                   {contact.email}
                                 </div>
                               )}
                               {contact.role && (
                                 <div className="flex items-center gap-1.5">
-                                  <Briefcase className="w-3 h-3 text-[#00adc7]" />
+                                  <Briefcase className="w-3 h-3 text-primary" />
                                   {contact.role}
                                 </div>
                               )}
@@ -730,7 +730,7 @@ export function CreateDealDialog({ open, onOpenChange, defaultPhone, defaultName
               {isCreatingContact && (
                 <div className="grid grid-cols-2 gap-3 p-3 bg-muted/30 rounded-lg border border-dashed border-border">
                   <div className="space-y-1.5 col-span-2 flex justify-between items-center">
-                    <Label className="text-[#00adc7] font-semibold">Novo Contato</Label>
+                    <Label className="text-primary font-semibold">Novo Contato</Label>
                     <Button variant="ghost" size="sm" className="h-6 px-2 text-xs" onClick={() => setIsCreatingContact(false)}>
                       Remover
                     </Button>

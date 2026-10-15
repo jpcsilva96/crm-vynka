@@ -86,7 +86,7 @@ export function AssociateDealContactDialog({ open, onOpenChange, dealId, current
           <div className="space-y-5 py-2">
             {companyId && (
               <div className="flex items-start gap-2 text-xs text-muted-foreground bg-muted/50 rounded-md p-3">
-                <Info className="w-4 h-4 shrink-0 mt-0.5 text-[#00adc7]" />
+                <Info className="w-4 h-4 shrink-0 mt-0.5 text-primary" />
                 <span>Apenas contatos vinculados à mesma empresa desta negociação são exibidos.</span>
               </div>
             )}
@@ -162,7 +162,7 @@ export function AssociateDealContactDialog({ open, onOpenChange, dealId, current
           <div className="flex items-center justify-between pt-2 border-t">
             <Button
               variant="outline"
-              className="text-[#00adc7] border-[#00adc7]/40 hover:bg-[#00adc7]/10 gap-2"
+              className="text-primary border-primary/40 hover:bg-primary/10 gap-2"
               onClick={() => { handleClose(); setShowCreateContact(true); }}
             >
               <Plus className="w-4 h-4" />

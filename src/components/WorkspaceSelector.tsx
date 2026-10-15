@@ -30,7 +30,7 @@ export function WorkspaceSelector({ collapsed, onLeaveWorkspace }: Props) {
     useWorkspaceStore();
   const activeWs = workspaces.find((w) => w.id === activeWorkspaceId) ?? null;
 
-  const userEmail = localStorage.getItem("variance_user_email");
+  const userEmail = localStorage.getItem("vynka_user_email");
   const { users } = useUsersStore();
   const { roles } = useRolesStore();
   
@@ -142,9 +142,9 @@ export function WorkspaceSelector({ collapsed, onLeaveWorkspace }: Props) {
               <p className="text-[11px] font-semibold text-sidebar-foreground truncate">
                 {activeWs?.name || "Selecionar workspace"}
               </p>
-              <p className="text-[9px] text-muted-foreground">Workspace</p>
+              <p className="text-[9px] text-sidebar-foreground/60">Workspace</p>
             </div>
-            <ChevronDown className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+            <ChevronDown className="h-3.5 w-3.5 text-sidebar-foreground/60 shrink-0" />
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="w-60">

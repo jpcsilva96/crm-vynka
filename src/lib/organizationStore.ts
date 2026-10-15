@@ -39,7 +39,7 @@ interface OrganizationState {
 
 export const useOrganizationStore = create<OrganizationState>((set, get) => ({
   organizations: [],
-  activeOrganizationId: localStorage.getItem("variance_active_org") || null,
+  activeOrganizationId: localStorage.getItem("vynka_active_org") || null,
   isLoading: true,
 
   fetchOrganizations: async () => {
@@ -82,8 +82,8 @@ export const useOrganizationStore = create<OrganizationState>((set, get) => ({
     const newActive = stillExists ? currentActive : (mapped.length > 0 ? mapped[0].id : null);
     
     if (newActive !== currentActive) {
-      if (newActive) localStorage.setItem("variance_active_org", newActive);
-      else localStorage.removeItem("variance_active_org");
+      if (newActive) localStorage.setItem("vynka_active_org", newActive);
+      else localStorage.removeItem("vynka_active_org");
     }
 
     set({ organizations: mapped, activeOrganizationId: newActive, isLoading: false });
@@ -164,15 +164,15 @@ export const useOrganizationStore = create<OrganizationState>((set, get) => ({
     set(s => {
       const filtered = s.organizations.filter(o => o.id !== id);
       const newActive = s.activeOrganizationId === id ? (filtered[0]?.id || null) : s.activeOrganizationId;
-      if (newActive) localStorage.setItem("variance_active_org", newActive);
-      else localStorage.removeItem("variance_active_org");
+      if (newActive) localStorage.setItem("vynka_active_org", newActive);
+      else localStorage.removeItem("vynka_active_org");
       return { organizations: filtered, activeOrganizationId: newActive };
     });
   },
 
   setActiveOrganization: (id) => {
-    if (id) localStorage.setItem("variance_active_org", id);
-    else localStorage.removeItem("variance_active_org");
+    if (id) localStorage.setItem("vynka_active_org", id);
+    else localStorage.removeItem("vynka_active_org");
     set({ activeOrganizationId: id });
   }
 }));

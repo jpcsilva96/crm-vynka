@@ -85,7 +85,7 @@ export const useUsersStore = create<UsersState>((set, get) => ({
     }
 
     set({ isLoading: true });
-    const currentUserEmail = localStorage.getItem("variance_user_email");
+    const currentUserEmail = localStorage.getItem("vynka_user_email");
     const { data, error } = await supabase
       .from("profiles")
       .select("*")

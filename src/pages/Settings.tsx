@@ -1890,8 +1890,8 @@ export default function Settings({ userEmail }: Props) {
 
   return (
     <div className="flex h-full min-h-0 flex-col bg-background">
-      <div className="flex h-14 shrink-0 items-center gap-3 border-b border-border bg-chat-header px-4 sm:px-6">
-        <h1 className="text-lg font-semibold text-chat-header-foreground">Configurações</h1>
+      <div className="flex h-14 shrink-0 items-center gap-3 border-b border-border bg-card px-4 sm:px-6">
+        <h1 className="text-lg font-semibold text-foreground">Configurações</h1>
       </div>
 
       <div className="min-h-0 flex-1 overflow-hidden">

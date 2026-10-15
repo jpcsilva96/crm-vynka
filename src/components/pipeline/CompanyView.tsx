@@ -457,7 +457,7 @@ export function CompanyView({ companyId, onBack, onOpenDeal, onOpenCompany, curr
                   
                   <Button 
                     variant="ghost" 
-                    className="w-full justify-start gap-2 text-[#00adc7] hover:text-[#008ba1] hover:bg-[#00adc7]/5 font-bold h-10 -ml-2"
+                    className="w-full justify-start gap-2 text-primary hover:text-primary/80 hover:bg-primary/5 font-bold h-10 -ml-2"
                     onClick={() => setShowAssociate(true)}
                   >
                     <Plus className="w-4 h-4" />

@@ -50,7 +50,7 @@ type AlertsState = {
   syncRemoteAlerts: (input: { workspaceId: string; userEmail: string }) => Promise<void>;
 };
 
-const STORAGE_KEY = "variance.alerts.center";
+const STORAGE_KEY = "vynka.alerts.center";
 
 const getNowIso = () => new Date().toISOString();
 

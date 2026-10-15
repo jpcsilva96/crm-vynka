@@ -158,7 +158,7 @@ export function AssociateContactDialog({ open, onOpenChange, companyId, companyN
           <div className="flex items-center justify-between pt-2 border-t">
             <Button
               variant="outline"
-              className="text-[#00adc7] border-[#00adc7]/40 hover:bg-[#00adc7]/10 gap-2"
+              className="text-primary border-primary/40 hover:bg-primary/10 gap-2"
               onClick={() => { handleClose(); setShowCreateContact(true); }}
             >
               <Plus className="w-4 h-4" />
@@ -167,7 +167,7 @@ export function AssociateContactDialog({ open, onOpenChange, companyId, companyN
             <Button
               disabled={!selectedContactId}
               onClick={handleAssociate}
-              className="bg-muted text-muted-foreground disabled:opacity-50 data-[active=true]:bg-[#00adc7] data-[active=true]:text-white"
+              className="bg-muted text-muted-foreground disabled:opacity-50 data-[active=true]:bg-primary data-[active=true]:text-primary-foreground"
               data-active={!!selectedContactId}
               style={selectedContactId ? { backgroundColor: "#c8ebee", color: "#007b8a" } : {}}
             >

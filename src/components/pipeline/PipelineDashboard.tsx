@@ -360,7 +360,7 @@ export function PipelineDashboard() {
   const { fetchPipelines, getPipelines } = useCRMPipelinesStore();
   const users = useUsersStore((state) => state.users);
   const roles = useRolesStore((state) => state.roles);
-  const userEmail = localStorage.getItem("variance_user_email");
+  const userEmail = localStorage.getItem("vynka_user_email");
   const currentUser = users.find((user) => user.email === userEmail);
   const currentUserRole = roles.find((role) => role.id === currentUser?.roleId);
   const onlyOwnRecords = isOwnVisibility(currentUserRole);

@@ -282,8 +282,8 @@ export default function UsersManagement({ embedded = false }: UsersManagementPro
   return (
     <div className={cn("flex h-full min-h-0 flex-1 flex-col overflow-y-auto bg-background", embedded && "h-auto overflow-visible bg-transparent")}>
       {!embedded ? (
-        <div className="flex h-14 shrink-0 items-center gap-3 bg-chat-header px-6">
-          <h1 className="flex items-center gap-2 text-lg font-semibold text-chat-header-foreground">
+        <div className="flex h-14 shrink-0 items-center gap-3 border-b border-border bg-card px-6">
+          <h1 className="flex items-center gap-2 text-lg font-semibold text-foreground">
             <Shield className="h-5 w-5 text-primary" />
             Gerenciamento de Acessos
           </h1>

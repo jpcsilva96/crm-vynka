@@ -12,12 +12,12 @@ interface ThemeState {
 export const useThemeStore = create<ThemeState>()(
   persist(
     (set) => ({
-      theme: "dark", // Default to dark as requested
+      theme: "light", // padrão claro, como o vynka-main
       setTheme: (theme) => set({ theme }),
       toggleTheme: () => set((state) => ({ theme: state.theme === "dark" ? "light" : "dark" })),
     }),
     {
-      name: "variance_theme",
+      name: "vynka_theme",
     }
   )
 );

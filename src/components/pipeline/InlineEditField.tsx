@@ -99,7 +99,7 @@ export function InlineEditField({ value, placeholder, multiline, onSave, classNa
           </button>
           <button
             onClick={handleSave}
-            className="text-sm font-semibold text-[#00adc7] hover:text-[#0094aa] transition-colors"
+            className="text-sm font-semibold text-primary hover:text-[#0094aa] transition-colors"
           >
             Salvar
           </button>

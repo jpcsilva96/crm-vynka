@@ -13,8 +13,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import varianceLogo from "@/assets/variance-logo-white.png";
-import { useForcedDarkTheme } from "@/hooks/useForcedDarkTheme";
+import { VynkaLogo } from "@/components/VynkaLogo";
 
 interface Props {
   userEmail: string;
@@ -48,7 +47,6 @@ function WorkspacePickerSkeleton() {
 }
 
 export function WorkspacePicker({ userEmail, onSelect }: Props) {
-  useForcedDarkTheme();
   const { workspaces, addWorkspace, setActiveWorkspace, isLoading: isLoadingWorkspaces } = useWorkspaceStore();
   const { users, isLoading: isLoadingUsers } = useUsersStore();
   const { roles, isLoading: isLoadingRoles } = useRolesStore();
@@ -84,7 +82,7 @@ export function WorkspacePicker({ userEmail, onSelect }: Props) {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="w-full max-w-lg space-y-6">
         <div className="flex flex-col items-center gap-3">
-          <img src={varianceLogo} alt="Variance" className="h-auto w-[280px] max-w-full object-contain" />
+          <VynkaLogo className="text-[28px]" />
           <p className="text-muted-foreground text-sm">Selecione a empresa</p>
           <p className="text-xs text-muted-foreground">{userEmail}</p>
         </div>

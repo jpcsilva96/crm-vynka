@@ -2,16 +2,14 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import varianceLogo from "@/assets/variance-logo-white.png";
+import { VynkaLogo } from "@/components/VynkaLogo";
 import { supabase } from "@/integrations/supabase/client";
-import { useForcedDarkTheme } from "@/hooks/useForcedDarkTheme";
 
 interface Props {
   onLogin: (email: string) => void;
 }
 
 export default function Login({ onLogin }: Props) {
-  useForcedDarkTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -101,15 +99,11 @@ export default function Login({ onLogin }: Props) {
   };
 
   return (
-    <div className="dark flex min-h-screen items-center justify-center bg-background px-4 text-foreground">
+    <div className="flex min-h-screen items-center justify-center bg-background px-4 text-foreground">
       <div className="w-full max-w-md space-y-8">
         <div className="flex w-full flex-col items-center justify-center text-center">
           <div className="flex w-full justify-center">
-            <img
-              src={varianceLogo}
-              alt="Variance"
-              className="mx-auto h-auto w-[280px] max-w-full object-contain"
-            />
+            <VynkaLogo className="text-[28px]" />
           </div>
         </div>
 

@@ -1035,7 +1035,7 @@ export function DealView({ deal, onBack, userEmail, onOpenCompany, onOpenContact
                               placeholder="E-mail"
                               emptyLabel="Sem e-mail"
                               onSave={(v) => updateContact(contact.id, { email: v || undefined })}
-                              className="font-medium text-[#00adc7] flex-1"
+                              className="font-medium text-primary flex-1"
                             />
                           </div>
                         </div>
@@ -1089,7 +1089,7 @@ export function DealView({ deal, onBack, userEmail, onOpenCompany, onOpenContact
                         {onOpenContact && (
                           <button
                             onClick={() => onOpenContact(contact.id)}
-                            className="flex items-center gap-1.5 text-[#00adc7] text-sm font-medium hover:underline"
+                            className="flex items-center gap-1.5 text-primary text-sm font-medium hover:underline"
                           >
                             Abrir detalhes do contato
                             <ExternalLink className="w-3.5 h-3.5" />
@@ -1166,7 +1166,7 @@ export function DealView({ deal, onBack, userEmail, onOpenCompany, onOpenContact
                       {onOpenCompany && (
                         <button
                           onClick={() => onOpenCompany(liveCompany.id)}
-                          className="flex items-center gap-1.5 text-[#00adc7] text-sm font-medium hover:underline"
+                          className="flex items-center gap-1.5 text-primary text-sm font-medium hover:underline"
                         >
                           Abrir página da Empresa
                           <ExternalLink className="w-3.5 h-3.5" />
@@ -1730,7 +1730,7 @@ export function DealView({ deal, onBack, userEmail, onOpenCompany, onOpenContact
                               <tr 
                                 className={cn(
                                   "hover:bg-muted/30 transition-colors border-b cursor-pointer align-middle",
-                                  isCurrentDeal && "bg-cyan-50/60 hover:bg-cyan-50 border-l-4 border-l-[#00adc7]"
+                                  isCurrentDeal && "bg-cyan-50/60 hover:bg-cyan-50 border-l-4 border-l-primary"
                                 )}
                                 onClick={() => setExpandedDeals(prev => ({ ...prev, [rDeal.id]: !isExpanded }))}
                               >
@@ -1739,7 +1739,7 @@ export function DealView({ deal, onBack, userEmail, onOpenCompany, onOpenContact
                                     <ChevronDown className={cn("w-4 h-4 text-muted-foreground shrink-0 transition-transform", isExpanded && "rotate-180")} />
                                     <span className="whitespace-nowrap">{rDeal.dealName || "Sem Nome"}</span>
                                     {isCurrentDeal && (
-                                      <span className="rounded-full bg-[#00adc7]/10 px-2 py-0.5 text-[10px] font-bold uppercase text-[#008ba1]">
+                                      <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold uppercase text-primary/80">
                                         Atual
                                       </span>
                                     )}
@@ -1771,7 +1771,7 @@ export function DealView({ deal, onBack, userEmail, onOpenCompany, onOpenContact
                                   <Button 
                                     variant="ghost" 
                                     size="sm" 
-                                    className="h-8 px-2.5 text-[#00adc7] hover:text-[#008ba1] hover:bg-cyan-50 font-bold"
+                                    className="h-8 px-2.5 text-primary hover:text-primary/80 hover:bg-cyan-50 font-bold"
                                     onClick={() => triggerOpenDeal(rDeal.id)}
                                     title="Abrir negociação"
                                   >
@@ -2561,7 +2561,7 @@ export function DealView({ deal, onBack, userEmail, onOpenCompany, onOpenContact
           <DialogFooter className="flex-row justify-center gap-4 pt-4 sm:justify-center">
             <Button 
               variant="ghost" 
-              className="px-8 h-12 rounded-full bg-[#c4f5ff] text-[#00adc7] hover:bg-[#a6edff] hover:text-[#00adc7] font-bold"
+              className="px-8 h-12 rounded-full bg-[#c4f5ff] text-primary hover:bg-[#a6edff] hover:text-primary font-bold"
               onClick={() => setContactToRemove(null)}
             >
               Cancelar
@@ -2713,7 +2713,7 @@ export function DealView({ deal, onBack, userEmail, onOpenCompany, onOpenContact
                             const contact = contacts.find(c => c.id === id);
                             if (!contact) return null;
                             return (
-                              <div key={id} className="relative group p-3 bg-muted/20 rounded-lg border border-border/50 hover:border-[#00adc7]/30 transition-colors">
+                              <div key={id} className="relative group p-3 bg-muted/20 rounded-lg border border-border/50 hover:border-primary/30 transition-colors">
                                 <button 
                                   onClick={() => setTempContactIds(prev => prev.filter(x => x !== id))}
                                   className="absolute top-2 right-2 p-1 text-muted-foreground hover:text-red-500 transition-colors"
@@ -2726,19 +2726,19 @@ export function DealView({ deal, onBack, userEmail, onOpenCompany, onOpenContact
                                   <div className="flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-muted-foreground">
                                     {contact.phone && (
                                       <div className="flex items-center gap-1.5">
-                                        <Phone className="w-3 h-3 text-[#00adc7]" />
+                                        <Phone className="w-3 h-3 text-primary" />
                                         {contact.phone}
                                       </div>
                                     )}
                                     {contact.email && (
                                       <div className="flex items-center gap-1.5">
-                                        <Mail className="w-3 h-3 text-[#00adc7]" />
+                                        <Mail className="w-3 h-3 text-primary" />
                                         {contact.email}
                                       </div>
                                     )}
                                     {contact.role && (
                                       <div className="flex items-center gap-1.5">
-                                        <Briefcase className="w-3 h-3 text-[#00adc7]" />
+                                        <Briefcase className="w-3 h-3 text-primary" />
                                         {contact.role}
                                       </div>
                                     )}
@@ -2754,7 +2754,7 @@ export function DealView({ deal, onBack, userEmail, onOpenCompany, onOpenContact
                     {isCreatingContactDialog && (
                       <div className="grid grid-cols-2 gap-3 p-3 bg-muted/30 rounded-lg border border-dashed border-border mt-4">
                         <div className="space-y-1.5 col-span-2 flex justify-between items-center">
-                          <Label className="text-[#00adc7] font-semibold">Novo Contato</Label>
+                          <Label className="text-primary font-semibold">Novo Contato</Label>
                           <Button variant="ghost" size="sm" className="h-6 px-2 text-xs" onClick={() => setIsCreatingContactDialog(false)}>
                             Remover
                           </Button>
@@ -2853,7 +2853,7 @@ export function DealView({ deal, onBack, userEmail, onOpenCompany, onOpenContact
           {showTypeChangeDialog === "Juridica" && tempCompanyId && (
             <DialogFooter className="px-6 py-4 border-t bg-muted/10">
               <Button 
-                className="w-full bg-[#00adc7] hover:bg-[#008ba1] text-white font-bold h-11"
+                className="w-full bg-primary hover:bg-primary/80 text-white font-bold h-11"
                 onClick={async () => {
                   const comp = wsCompanies.find(c => c.id === tempCompanyId);
                   if (comp) {

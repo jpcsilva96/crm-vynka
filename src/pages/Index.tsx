@@ -32,8 +32,7 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { WorkspaceSelector } from "@/components/WorkspaceSelector";
 import { useWorkspaceStore, type Workspace } from "@/lib/workspaceStore";
-import varianceLogoDark from "@/assets/variance-logo-white.png";
-import varianceLogoLight from "@/assets/variance-logo-light.png";
+import { VynkaLogo } from "@/components/VynkaLogo";
 import { useDealsStore } from "@/lib/dealsStore";
 import { useUsersStore } from "@/lib/usersStore";
 import { useRolesStore } from "@/lib/rolesStore";
@@ -73,11 +72,11 @@ type Page = "profile" | "settings" | "pipeline" | "pipelineDashboard" | "users" 
 const Index = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [userEmail, setUserEmail] = useState<string | null>(() => localStorage.getItem("variance_user_email"));
+  const [userEmail, setUserEmail] = useState<string | null>(() => localStorage.getItem("vynka_user_email"));
   const { workspaces, activeWorkspaceId, setActiveWorkspace, fetchWorkspaces } = useWorkspaceStore();
   const activeWs = workspaces.find((w) => w.id === activeWorkspaceId) ?? null;
-  const [workspaceReady, setWorkspaceReady] = useState(() => !!localStorage.getItem("variance_active_ws"));
-  const [organizationReady, setOrganizationReady] = useState(() => !!localStorage.getItem("variance_active_org"));
+  const [workspaceReady, setWorkspaceReady] = useState(() => !!localStorage.getItem("vynka_active_ws"));
+  const [organizationReady, setOrganizationReady] = useState(() => !!localStorage.getItem("vynka_active_org"));
 
   const { users, fetchUsers, isLoading: isUsersLoading } = useUsersStore();
   const { roles, fetchRoles, isLoading: isRolesLoading } = useRolesStore();
@@ -93,7 +92,7 @@ const Index = () => {
   const clearReadAlerts = useAlertsStore((state) => state.clearRead);
 
   const clearLocalSession = useCallback(() => {
-    localStorage.removeItem("variance_user_email");
+    localStorage.removeItem("vynka_user_email");
     setUserEmail(null);
     setOrganizationReady(false);
     setWorkspaceReady(false);
@@ -174,7 +173,7 @@ const Index = () => {
 
   const handleLogin = (email: string) => {
     const normalizedEmail = email.trim().toLowerCase();
-    localStorage.setItem("variance_user_email", normalizedEmail);
+    localStorage.setItem("vynka_user_email", normalizedEmail);
     setUserEmail(normalizedEmail);
     setOrganizationReady(false);
     setWorkspaceReady(false);
@@ -189,7 +188,7 @@ const Index = () => {
 
   const handleUserEmailChange = (email: string) => {
     const normalizedEmail = email.trim().toLowerCase();
-    localStorage.setItem("variance_user_email", normalizedEmail);
+    localStorage.setItem("vynka_user_email", normalizedEmail);
     setUserEmail(normalizedEmail);
   };
 
@@ -367,27 +366,19 @@ const Index = () => {
   };
   const navButtonClass = (active: boolean) =>
     `inline-flex h-10 items-center gap-2 rounded-lg px-3 text-sm font-medium whitespace-nowrap transition-colors ${
-      active ? "bg-primary text-primary-foreground shadow-sm" : "text-sidebar-foreground hover:bg-sidebar-accent"
+      active ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-sm" : "text-sidebar-foreground hover:bg-sidebar-accent"
     }`;
 
   return (
-    <div className="flex h-screen w-full flex-col overflow-hidden bg-chat-bg">
-      <header className="border-b border-border bg-sidebar-background/95 backdrop-blur supports-[backdrop-filter]:bg-sidebar-background/90">
+    <div className="flex h-screen w-full flex-col overflow-hidden bg-background">
+      <header className="border-b border-sidebar-border bg-sidebar-background">
         <div
           className="flex items-center justify-between gap-6 px-4 lg:px-6"
           style={{ height: 80, maxHeight: 80 }}
         >
           <div className="flex min-w-0 flex-1 items-center gap-6">
-            <div
-              className="flex shrink-0 items-center justify-start overflow-hidden"
-              style={{ width: 190, height: 80 }}
-            >
-              <img
-                src={theme === "light" ? varianceLogoLight : varianceLogoDark}
-                alt="Variance"
-                className={`block shrink-0 object-contain ${theme === "light" ? "mix-blend-multiply" : ""}`}
-                style={{ width: 180, height: "auto", maxWidth: "none" }}
-              />
+            <div className="flex shrink-0 items-center justify-start" style={{ height: 80 }}>
+              <VynkaLogo variant="dark" className="text-[17px]" />
             </div>
 
             <div className="min-w-0 overflow-x-auto no-scrollbar">
@@ -446,7 +437,7 @@ const Index = () => {
               type="button"
               aria-label="Abrir central de alertas"
               onClick={() => setAlertsDrawerOpen(true)}
-              className="relative flex h-11 w-11 items-center justify-center rounded-lg border border-border bg-sidebar-accent/50 text-sidebar-foreground outline-none transition-colors hover:bg-sidebar-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              className="relative flex h-11 w-11 items-center justify-center rounded-lg border border-sidebar-border bg-sidebar-accent/50 text-sidebar-foreground outline-none transition-colors hover:bg-sidebar-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               <Bell className="h-5 w-5" />
               {unreadAlertsCount > 0 ? (
@@ -462,8 +453,8 @@ const Index = () => {
                   aria-label="Abrir menu do perfil"
                   className={`flex h-11 w-11 items-center justify-center rounded-lg border outline-none transition-colors hover:bg-sidebar-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
                     isHeaderMenuPage
-                      ? "border-primary/40 bg-primary/10"
-                      : "border-border bg-sidebar-accent/50"
+                      ? "border-sidebar-primary/40 bg-sidebar-primary/10"
+                      : "border-sidebar-border bg-sidebar-accent/50"
                   }`}
                 >
                   <UserAvatar name={currentUser?.name || "Usuario"} avatar={currentUser?.avatar} size="md" className="h-8 w-8" />

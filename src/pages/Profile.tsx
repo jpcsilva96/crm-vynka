@@ -84,7 +84,7 @@ export default function Profile({ userEmail, onUserEmailChange }: Props) {
         const authEmail = data.user?.email?.toLowerCase();
         if (authEmail === nextEmail) {
           await updateUser(currentUser.id, { email: nextEmail });
-          localStorage.setItem("variance_user_email", nextEmail);
+          localStorage.setItem("vynka_user_email", nextEmail);
           onUserEmailChange(nextEmail);
           toast.success("Email atualizado com sucesso.");
         } else {

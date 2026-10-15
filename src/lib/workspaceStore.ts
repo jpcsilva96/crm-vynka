@@ -40,7 +40,7 @@ const buildWorkspaceDealCodePrefix = (name: string) =>
 
 export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   workspaces: [],
-  activeWorkspaceId: localStorage.getItem("variance_active_ws") || null,
+  activeWorkspaceId: localStorage.getItem("vynka_active_ws") || null,
   isLoading: true,
 
   fetchWorkspaces: async () => {
@@ -73,8 +73,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
     const newActive = stillExists ? currentActive : (mapped.length > 0 ? mapped[0].id : null);
     
     if (newActive !== currentActive) {
-      if (newActive) localStorage.setItem("variance_active_ws", newActive);
-      else localStorage.removeItem("variance_active_ws");
+      if (newActive) localStorage.setItem("vynka_active_ws", newActive);
+      else localStorage.removeItem("vynka_active_ws");
     }
 
     void import("@/lib/pipelineStagesPersistence").then(({ ensureWorkspacePipelineStages }) =>
@@ -150,16 +150,16 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       set(s => {
         const filtered = s.workspaces.filter(w => w.id !== id);
         const newActive = s.activeWorkspaceId === id ? (filtered[0]?.id || null) : s.activeWorkspaceId;
-        if (newActive) localStorage.setItem("variance_active_ws", newActive);
-        else localStorage.removeItem("variance_active_ws");
+        if (newActive) localStorage.setItem("vynka_active_ws", newActive);
+        else localStorage.removeItem("vynka_active_ws");
         return { workspaces: filtered, activeWorkspaceId: newActive };
       });
     }
   },
 
   setActiveWorkspace: (id) => {
-    if (id) localStorage.setItem("variance_active_ws", id);
-    else localStorage.removeItem("variance_active_ws");
+    if (id) localStorage.setItem("vynka_active_ws", id);
+    else localStorage.removeItem("vynka_active_ws");
     set({ activeWorkspaceId: id });
   },
 

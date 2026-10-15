@@ -1,8 +1,7 @@
 import { Shield } from "lucide-react";
-import varianceLogo from "@/assets/variance-logo-white.png";
+import { VynkaLogo } from "@/components/VynkaLogo";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useOrganizationStore, type Organization } from "@/lib/organizationStore";
-import { useForcedDarkTheme } from "@/hooks/useForcedDarkTheme";
 
 interface Props {
   userEmail: string;
@@ -35,7 +34,6 @@ function OrganizationPickerSkeleton() {
 }
 
 export function OrganizationPicker({ userEmail, onSelect }: Props) {
-  useForcedDarkTheme();
   const { organizations, isLoading: isLoadingOrgs, setActiveOrganization } = useOrganizationStore();
 
   const handleSelect = (org: Organization) => {
@@ -51,7 +49,7 @@ export function OrganizationPicker({ userEmail, onSelect }: Props) {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="w-full max-w-lg space-y-6">
         <div className="flex flex-col items-center gap-3">
-          <img src={varianceLogo} alt="Variance" className="h-auto w-[280px] max-w-full object-contain" />
+          <VynkaLogo className="text-[28px]" />
           <p className="text-sm text-muted-foreground">Selecione a organização</p>
           <p className="text-xs text-muted-foreground">{userEmail}</p>
         </div>
